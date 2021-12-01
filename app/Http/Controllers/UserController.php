@@ -14,4 +14,31 @@ class UserController extends Controller
             ->delete();
         return redirect('');
     }
+
+    public function edit($id)
+    {
+        $row = DB::table('users')
+            ->where('id',$id)
+            ->first();
+        $data = [
+            'Info'=>$row,
+            'Title'=>'Edit'
+        ];
+        return view('upravitProfil',$data);
+    }
+
+    function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email'
+        ]);
+        $updating = DB::table('users')
+            ->where('id', $request->input('cid'))
+            ->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email')
+            ]);
+        return redirect('profil');
+    }
 }
