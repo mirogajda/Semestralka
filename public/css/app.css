@@ -1,0 +1,302 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.navigacia {
+    background-color: #333;
+    overflow: hidden;
+}
+
+.navigacia a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navigacia a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.navigacia a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+.hlavnyObsah {
+    font-size: large;
+    width: 100%;
+    padding-top: 40px;
+    text-align: justify;
+}
+
+.hlavnyObsah2 {
+    font-size: large;
+    width: 100%;
+    text-align: justify;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+h1 {
+    padding-left: 40px;
+    padding-right: 40px;
+    font-style: italic;
+    color: #04AA6D;
+
+}
+
+h2 {
+    padding-left: 40px;
+    padding-right: 40px;
+    font-style: italic;
+    color: #04AA6D;
+    font-size: 30px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    text-align: center;
+    font-style: italic;
+    padding-left: 40px;
+    padding-right: 40px;
+    color: #04AA6D;
+    font-size: 30px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    color: #04AA6D;
+    font-size: 25px;
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+h5 {
+    display: block;
+    font-size: 2em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.obrazok {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+    height: 300px;
+    -o-object-fit: cover;
+       object-fit: cover;
+
+}
+
+.oblubeneMiesta {
+    align-items: flex-start;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.oblubeneMiesto {
+    text-align: center;
+    width: 30%;
+    margin-bottom: 50px;
+}
+
+@media screen and (max-width: 600px) {
+    .oblubeneMiesta {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .oblubeneMiesto {
+        width: 100%;
+    }
+}
+
+.link {
+    text-decoration: none;
+    color: darkolivegreen;
+    font-size: larger;
+}
+
+.link2 {
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    font-style: italic;
+}
+
+.popis1 {
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-top: 40px;
+}
+
+.popis2 {
+    font-size: large;
+    margin-top: 20px;
+}
+
+.popis3 {
+    font-size: large;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.footer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+.tabulkaKraj {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    border: 2px solid #4F7849;
+    background-color: #EEEEEE;
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.tabulkaKraj td, .tabulkaKraj th {
+    border: 1px solid #4F7849;
+    padding: 3px 2px;
+}
+
+.tabulkaKraj td:nth-child(even) {
+    background: #CEE0CC;
+}
+
+.tabulkaKraj thead {
+
+    background: #4F7849;
+    background: linear-gradient(to bottom, #7b9a76 0%, #60855b 66%, #4F7849 100%);
+    border-bottom: 1px solid #444444;
+
+}
+
+.tabulkaKraj thead th {
+    font-size: 15px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-align: left;
+    border-left: 0px solid #D0E4F5;
+
+}
+
+.tabulkaKraj thead th:first-child {
+    border-left: none;
+}
+
+.tabulkaKraj tfoot td {
+    font-size: 21px;
+}
+
+.mapa {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+
+}
+
+.mapa iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 90%;
+    position: absolute;
+    padding-bottom: 40px;
+    padding-left: 10%;
+}
+
+.loginButton {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+
+form {
+    border: 3px solid #f1f1f1;
+}
+
+.registerbtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+
+.registerbtn:hover {
+    opacity: 1;
+}
+
+input[type=text], input[type=password], input[type=email] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+* {
+    box-sizing: border-box
+}
+
+.container {
+    padding: 16px;
+}
+
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+a {
+    color: dodgerblue;
+}
+
+.signin {
+    background-color: #f1f1f1;
+    text-align: center;
+}
+
+.logContainer {
+    min-height: 90vh;
+}
+
