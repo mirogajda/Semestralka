@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::view("/","domov")->name("homePage");
 Route::view("/tipy-na-vylet","tipyNaVylet")->name("tipyNaVyletPage");
 Route::view("/o-nas","oNas")->name("oNasPage");
+Route::view("/profil","profil")->name("profilPage");
+Route::get('delete/{id}',[UserController::class,'delete']);
+
 
 require __DIR__.'/auth.php';
 

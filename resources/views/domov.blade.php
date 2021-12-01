@@ -1,11 +1,6 @@
 @extends("layouts.master")
 @section("obsah")
-    @auth
-        <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit">Log out</button>
-    </form>
-        @endauth
+
 <div class="hlavnyObsah">
     <h1>
         Spoznajte krásy Slovenska

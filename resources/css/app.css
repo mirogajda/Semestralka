@@ -89,6 +89,7 @@ h5 {
     font-weight: bold;
 }
 
+
 .obrazok {
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -300,3 +301,4 @@ a {
 .logContainer {
     min-height: 90vh;
 }
+
