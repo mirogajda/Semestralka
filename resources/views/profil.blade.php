@@ -10,7 +10,7 @@
 
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button class="loginButton" type="submit">Log out</button>
+            <button class="loginButton" type="submit">Odhlásiť sa</button>
         </form>
     </div>
 
