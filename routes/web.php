@@ -19,6 +19,7 @@ Route::view("/","domov")->name("homePage");
 Route::view("/tipy-na-vylet","tipyNaVylet")->name("tipyNaVyletPage");
 Route::view("/o-nas","oNas")->name("oNasPage");
 Route::view("/profil","profil")->name("profilPage");
+Route::view("/clanky","clanky")->name("clankyPage");
 Route::get('delete/{id}',[UserController::class,'delete']);
 Route::get('edit/{id}',[UserController::class,'edit']);
 Route::post('update',[UserController::class,'update'])->name('update');

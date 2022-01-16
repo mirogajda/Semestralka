@@ -9,6 +9,7 @@ class UserController extends Controller
 {
     public function delete($id)
     {
+
         $delete = DB::table('users')
             ->where('id',$id)
             ->delete();
@@ -41,4 +42,7 @@ class UserController extends Controller
             ]);
         return redirect('profil');
     }
+
+
+
 }

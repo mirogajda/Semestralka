@@ -8,7 +8,7 @@
             <a class="{{Request::routeIs("login") ? "active":""}}" href="{{route("login")}}">Prihlásiť</a>
         @endif
     @endguest
-    @auth<a href="{{route("profilPage")}}" >
+    @auth<a class="{{Request::routeIs("profilPage") ? "active":""}}" href="{{route("profilPage")}}" >
             @csrf
             Profil
         </a>@endauth
