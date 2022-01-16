@@ -19,7 +19,7 @@
             </tr>
             <tbody>
             <tr>
-                <td><a class="link2" href="{{route("homePage")}}">Bratislavký</a></td>
+                <td><a class="link2" href="{{route("clankyPage")}}">Bratislavký</a></td>
                 <td><a class="link2" href="{{route("homePage")}}">Trnavský</a></td>
                 <td><a class="link2" href="{{route("homePage")}}">Trenčiansky</a></td>
                 <td><a class="link2" href="{{route("homePage")}}">Nitriansky</a></td>

@@ -4,22 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
-    public function delete($id)
+    public function delete()
     {
 
         $delete = DB::table('users')
-            ->where('id',$id)
+            ->where('id',Auth::id())
             ->delete();
         return redirect('');
     }
 
-    public function edit($id)
+    public function edit()
     {
         $row = DB::table('users')
-            ->where('id',$id)
+            ->where('id',Auth::id())
             ->first();
         $data = [
             'Info'=>$row,
