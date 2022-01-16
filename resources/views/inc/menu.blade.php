@@ -11,5 +11,7 @@
     @auth<a class="{{Request::routeIs("profilPage") ? "active":""}}" href="{{route("profilPage")}}" >
             @csrf
             Profil
+    </a>
+    <a href="{{route('novyClanokPage')}}">Nový článok</a>
         </a>@endauth
 </div>

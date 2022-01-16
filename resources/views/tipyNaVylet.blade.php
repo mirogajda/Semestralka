@@ -19,16 +19,18 @@
             </tr>
             <tbody>
             <tr>
-                <td><a class="link2" href="{{route("clankyPage")}}">Bratislavký</a></td>
-                <td><a class="link2" href="{{route("homePage")}}">Trnavský</a></td>
-                <td><a class="link2" href="{{route("homePage")}}">Trenčiansky</a></td>
-                <td><a class="link2" href="{{route("homePage")}}">Nitriansky</a></td>
+                @for($i = 0; $i < 4; $i++)
+                    <td>
+                        <a class="link2" href="/clanky/{{$regions[$i]->tag}}">{{$regions[$i]->name}}</a>
+                    </td>
+                @endfor
             </tr>
             <tr>
-                <td><a class="link2" href="{{route("homePage")}}">Žilinský</a></td>
-                <td><a class="link2" href="{{route("homePage")}}">Banskobystrický</a></td>
-                <td><a class="link2" href="{{route("homePage")}}">Prešovský</a></td>
-                <td><a class="link2" href="{{route("homePage")}}">Košický</a></td>
+                @for($i = 4; $i < 8; $i++)
+                    <td>
+                        <a class="link2" href="/clanky/{{$regions[$i]->tag}}">{{$regions[$i]->name}}</a>
+                    </td>
+                @endfor
             </tr>
             </tbody>
         </table>
