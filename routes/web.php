@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageGalleryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
@@ -33,6 +34,10 @@ Route::view("/profil","profil")->name("profilPage");
 Route::get("/clanky/novy-clanok", [ArticleController::class, 'getToCreate'])->name('novyClanokPage');
 Route::post("/clanky/vytvorit", [ArticleController::class, 'vytvorit']);
 Route::get("/clanky/{region}", [ArticleController::class, 'getByRegion']);
+
+Route::get("/novy-obrazok", [ImageGalleryController::class, 'getToAdd'])->name('novyObrazokPage');
+Route::post("/novy-obrazok/pridat", [ImageGalleryController::class, 'pridat']);
+Route::get("/galeria/{images}", [ImageGalleryController::class, 'getImages'])->name('galeriaPage');
 
 Route::get('delete',[UserController::class,'delete']);
 Route::get('edit',[UserController::class,'edit']);

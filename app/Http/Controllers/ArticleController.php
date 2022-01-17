@@ -28,7 +28,6 @@ class ArticleController extends Controller
         if (Auth::check()) {
             return view('novyClanok', ['options' => Region::all()]);
         }
-//        return view('novyClanok', ['options' => Region::all()]);
     }
 
     public function vytvorit(Request $request)

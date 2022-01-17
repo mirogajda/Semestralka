@@ -28,7 +28,7 @@
             </select>
         </label>
 
-        <button type="submit">Pridaj</button>
+        <button class="loginButton" type="submit">Pridaj</button>
 
     </form>
 
