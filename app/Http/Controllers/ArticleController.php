@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Models\Region;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class ArticleController extends Controller
 {
@@ -23,7 +25,10 @@ class ArticleController extends Controller
 
     public function getToCreate()
     {
-        return view('novyClanok', ['options' => Region::all()]);
+        if (Auth::check()) {
+            return view('novyClanok', ['options' => Region::all()]);
+        }
+//        return view('novyClanok', ['options' => Region::all()]);
     }
 
     public function vytvorit(Request $request)
