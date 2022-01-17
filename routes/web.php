@@ -37,7 +37,7 @@ Route::get("/clanky/{region}", [ArticleController::class, 'getByRegion']);
 
 Route::get("/novy-obrazok", [ImageGalleryController::class, 'getToAdd'])->name('novyObrazokPage');
 Route::post("/novy-obrazok/pridat", [ImageGalleryController::class, 'pridat']);
-Route::get("/galeria/{images}", [ImageGalleryController::class, 'getImages'])->name('galeriaPage');
+Route::get("/galeria", [ImageGalleryController::class, 'getImages'])->name('galeriaPage');
 
 Route::get('delete',[UserController::class,'delete']);
 Route::get('edit',[UserController::class,'edit']);

@@ -114,6 +114,18 @@ h6 {
 
 }
 
+.obrazok2 {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 400px;
+    object-fit: cover;
+
+}
+
 .oblubeneMiesta {
     align-items: flex-start;
     width: 100%;
