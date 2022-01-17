@@ -28,16 +28,24 @@ class ArticleController extends Controller
 
     public function vytvorit(Request $request)
     {
-        error_log($request->title);
+
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'hashtag' => 'required'
+        ]);
 
         Article::create(array(
             'title' => $request->title,
             'content' => $request['content'],
             'hashtag' => $request->hashtag,
             'region' => $request->region,
+
         ));
 
-        return route('tipyNaVyletPage');
+
+//        return route('tipyNaVyletPage');
+        return back();
     }
 
 

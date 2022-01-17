@@ -1,11 +1,10 @@
 @extends("layouts.master")
 @section("obsah")
-    <div class="article-wrapper">
+    <form class="logContainer">
         @foreach($articles as $article)
-            <div class="article">
-                <div class="title">{{$article->title}}</div>
-                <div class="content">{{$article->content}}</div>
-            </div>
+                <div class="article-title">{{$article->title}}</div>
+                <div class="popis2">{{$article->content}}</div>
+                <div>Článok bol naposledy upravený: {{$article->updated_at}}</div>
         @endforeach
-    </div>
+    </form>
 @endsection

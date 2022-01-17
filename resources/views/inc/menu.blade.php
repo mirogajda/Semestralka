@@ -8,10 +8,11 @@
             <a class="{{Request::routeIs("login") ? "active":""}}" href="{{route("login")}}">Prihlásiť</a>
         @endif
     @endguest
-    @auth<a class="{{Request::routeIs("profilPage") ? "active":""}}" href="{{route("profilPage")}}" >
+    @auth
+        <a class="{{Request::routeIs("profilPage") ? "active":""}}" href="{{route("profilPage")}}" >
             @csrf
             Profil
-    </a>
-    <a href="{{route('novyClanokPage')}}">Nový článok</a>
-        </a>@endauth
+        </a>
+        <a class="{{Request::routeIs("novyClanokPage") ? "active":""}}" href="{{route("novyClanokPage")}}">Pridať nový článok</a>
+    @endauth
 </div>
