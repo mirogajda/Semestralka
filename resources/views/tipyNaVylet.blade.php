@@ -1,7 +1,7 @@
 @extends("layouts.master")
 @section("obsah")
 
-    <form class="logContainer">
+    <div class="logContainer">
     <div class="hlavnyObsah2">
         <h3>Tipy na výlet</h3>
         <p class="popis2">Prekrásne lesy, dych vyrážajúce výhľady, malebné scenérie - to všetko si budete môcť vychutnať
@@ -40,7 +40,7 @@
         </table>
 
     </div>
-    </form>
+    </div>
 
 @endsection
 

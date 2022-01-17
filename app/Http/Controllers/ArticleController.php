@@ -36,7 +36,7 @@ class ArticleController extends Controller
         $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'hashtag' => 'required'
+            'hashtag' => 'required',
         ]);
 
         Article::create(array(
@@ -44,12 +44,18 @@ class ArticleController extends Controller
             'content' => $request['content'],
             'hashtag' => $request->hashtag,
             'region' => $request->region,
+            'user_id' => Auth::id()
 
         ));
 
 
 //        return route('tipyNaVyletPage');
         return back();
+    }
+
+    public function getByUser()
+    {
+        
     }
 
 

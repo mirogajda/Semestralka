@@ -396,3 +396,7 @@ a {
     font-weight: lighter;
 
 }
+
+.small {
+    font-size: 14px;
+}
