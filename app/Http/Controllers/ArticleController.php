@@ -3,60 +3,143 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Models\Region;
+use App\Models\Comment;
+use App\Models\Picture;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Response;
+use Illuminate\View\View;
+use Intervention\Image\Facades\Image;
+use PhpParser\Error;
 
 class ArticleController extends Controller
 {
-    //
-    public function getByRegion($regionName)
+
+    public function index(Request $request)
     {
-        if ($regionName === null) {
-            return view('tipyNaVylet');
+        $articles = Article::select(['articles.*', 'pictures.picture as picture']);
+
+        if ($request->createdByMe) {
+            $articles = $articles->where('articles.user_id', \Auth::id());
         }
 
-        $articles = Article::where('region', '=', $regionName)->get();
+        $articles = $articles->join('pictures', 'pictures.id', '=', 'articles.picture_id')
+            ->get();
 
-        return view('clanky', ['articles' => $articles]);
+        return view('article.article-list', ['articles' => $articles]);
     }
 
-    public function getToCreate()
+    public function create()
     {
-        if (Auth::check()) {
-            return view('novyClanok', ['options' => Region::all()]);
-        }
+        return view('article.new-article');
     }
 
-    public function vytvorit(Request $request)
+    public function store(Request $request)
     {
-
         $request->validate([
-            'title' => 'required',
-            'content' => 'required',
-            'hashtag' => 'required',
+            'name' => 'required',
+            'picture' => 'required|image|max:4086',
+            'description' => 'required'
         ]);
 
-        Article::create(array(
-            'title' => $request->title,
-            'content' => $request['content'],
-            'hashtag' => $request->hashtag,
-            'region' => $request->region,
-            'user_id' => Auth::id()
+        $form_data = array(
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'user_id' => \Auth::id(),
+        );
 
-        ));
+        $article = Article::create($form_data);
 
+        $tempPicture = Image::make($request->file('picture'));
+        Response::make($tempPicture->encode('jpeg'));
 
-//        return route('tipyNaVyletPage');
-        return back();
+        $form_data = array(
+            'user_id' => \Auth::id(),
+            'picture' => $tempPicture,
+            'name'=> $request->file('picture')->getClientOriginalName(),
+            'article_id' => $article->id
+        );
+
+        $picture = Picture::create($form_data);
+
+        $article->picture_id = $picture->id;
+        $article->save();
+
+        return redirect()->route('article-list')->with('message', ['Článok úspešne pridaný.']);
     }
 
-    public function getByUser()
+    public function show(Request $request): View
     {
-        
+        $article = $this->getArticle($request->id);
+
+        $article->comments = Comment::select('comments.*', 'users.name as name')
+            ->join('users', 'users.id', '=', 'comments.user_id')
+            ->where('article_id', '=', $request->id)
+            ->get();
+
+        return view('article.article-detail', ['article' => $article]);
     }
 
+    public function edit(Request $request): View
+    {
+        $model = $this->getArticle($request->id);
+        return view('article.new-article', ['article' => $model]);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        $article = Article::findOrFail($request->input('id'));
+
+        if ($article == null) {
+            throw new Error('Nenašiel som článok.');
+        }
+
+        $article->name = $request->input('name');
+        $article->description = $request->input('description');
+
+        if ($request->file('picture') != null) {
+            Picture::findOrFail($article->picture_id)->delete();
+
+            $tempPicture = Image::make($request->file('picture'));
+            Response::make($tempPicture->encode('jpeg'));
+
+            $form_data = array(
+                'user_id' => \Auth::id(),
+                'picture' => $tempPicture,
+                'name'=> $request->file('picture')->getClientOriginalName(),
+                'article_id' => $article->id
+            );
+
+            $picture = Picture::create($form_data);
+            $article->picture_id = $picture->id;
+        }
+
+        $article->save();
+
+        return redirect()->route('article-list')->with('message', ['Úspešne upravené']);
+    }
+
+    public function remove(Request $request)
+    {
+        $id = $request->input('id');
+        Comment::where('article_id', $id)->delete();
+        Picture::where('article_id', $id)->delete();
+        Article::where('id', $id)->delete();
+
+        return response()->json(['message' => 'Článok úspešne vymazaný']);
+    }
+
+    private function getArticle($id)
+    {
+        return Article::select(['articles.*', 'pictures.picture as picture'])
+            ->join('pictures', 'pictures.id', '=', 'articles.picture_id')
+            ->where('articles.id', '=', $id)
+            ->first();
+    }
 
 }

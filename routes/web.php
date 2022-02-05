@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\ImageGalleryController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
-use App\Models\Region;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\IntroController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,33 +19,40 @@ use App\Models\Region;
 |
 */
 
-
-Route::view("/","domov")->name("homePage");
-
-Route::get("/tipy-na-vylet", function () {
-    $regions = Region::all();
-
-    return view('tipyNaVylet', [
-        'regions' => $regions
-    ]);
-})->name("tipyNaVyletPage");
-
-Route::view("/o-nas","oNas")->name("oNasPage");
-Route::view("/profil","profil")->name("profilPage");
-
-Route::get("/clanky/novy-clanok", [ArticleController::class, 'getToCreate'])->name('novyClanokPage');
-Route::post("/clanky/vytvorit", [ArticleController::class, 'vytvorit']);
-Route::get("/clanky/{region}", [ArticleController::class, 'getByRegion']);
-
-Route::get("/novy-obrazok", [ImageGalleryController::class, 'getToAdd'])->name('novyObrazokPage');
-Route::post("/novy-obrazok/pridat", [ImageGalleryController::class, 'pridat']);
-Route::get("/galeria", [ImageGalleryController::class, 'getImages'])->name('galeriaPage');
+Auth::routes();
 
 Route::get('delete',[UserController::class,'delete']);
 Route::get('edit',[UserController::class,'edit']);
 Route::post('update',[UserController::class,'update'])->name('update');
 
+Route::get('/', [IntroController::class, 'index'])->name('intro');
+
+Route::prefix('articles')->group(function () {
+    Route::middleware('auth')->group(function () {
+        Route::get('new', [ArticleController::class, 'create'])->name('new-article');
+        Route::post('store', [ArticleController::class, 'store'])->name('store-article');
+        Route::delete('remove', [ArticleController::class, 'remove'])->name('remove-article');
+        Route::post('{id}/update', [ArticleController::class, 'update'])->name('update-article');
+        Route::get('{id}/edit', [ArticleController::class, 'edit'])->name('edit-article');
+
+        //comments
+        Route::post('store-comment', [CommentController::class, 'store'])->name('store-comment');
+        Route::post('update-comment', [CommentController::class, 'update'])->name('update-comment');
+        Route::delete('remove-comment', [CommentController::class, 'remove'])->name('remove-comment');
+    });
+
+    Route::get('{id}', [ArticleController::class, 'show'])->name('article-detail');
+    Route::get('', [ArticleController::class, 'index'])->name('article-list');
+});
+
+Route::get('clear-message', [Controller::class, 'clearMessage'])
+    ->middleware('auth')
+    ->name('clear-message');
 
 require __DIR__.'/auth.php';
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
