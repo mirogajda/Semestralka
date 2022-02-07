@@ -22,7 +22,7 @@
                 <a class="nav-link" href="{{ route('register') }}">Registrácia</a>
             @endif
         @else
-            <a href="#">{{ Auth::user()->name }}</a>
+            <a href="#" class="user-name">{{ Auth::user()->name }}</a>
 
             <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 Odhlásiť
