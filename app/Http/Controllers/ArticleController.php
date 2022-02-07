@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\Picture;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\View\View;
 use Intervention\Image\Facades\Image;
@@ -20,11 +20,10 @@ class ArticleController extends Controller
         $articles = Article::select(['articles.*', 'pictures.picture as picture']);
 
         if ($request->createdByMe) {
-            $articles = $articles->where('articles.user_id', \Auth::id());
+            $articles = $articles->where('articles.user_id', Auth::id());
         }
 
-        $articles = $articles->join('pictures', 'pictures.id', '=', 'articles.picture_id')
-            ->get();
+        $articles = $articles->join('pictures', 'pictures.id', '=', 'articles.picture_id')->get();
 
         return view('article.article-list', ['articles' => $articles]);
     }
@@ -82,8 +81,8 @@ class ArticleController extends Controller
 
     public function edit(Request $request): View
     {
-        $model = $this->getArticle($request->id);
-        return view('article.new-article', ['article' => $model]);
+        $article = $this->getArticle($request->id);
+        return view('article.new-article', ['article' => $article]);
     }
 
     public function update(Request $request)

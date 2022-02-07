@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\IntroController;
+use App\Http\Controllers\TourController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Auth::routes();
 
 Route::get('delete',[UserController::class,'delete']);
 Route::get('edit',[UserController::class,'edit']);
@@ -45,14 +44,21 @@ Route::prefix('articles')->group(function () {
     Route::get('', [ArticleController::class, 'index'])->name('article-list');
 });
 
+Route::prefix('tours')->group(function () {
+    Route::middleware('auth')->group(function () {
+        Route::get('new', [TourController::class, 'create'])->name('new-tour');
+        Route::post('store', [TourController::class, 'store'])->name('store-tour');
+        Route::delete('remove', [TourController::class, 'remove'])->name('remove-tour');
+        Route::post('{id}/update', [TourController::class, 'update'])->name('update-tour');
+        Route::get('{id}/edit', [TourController::class, 'edit'])->name('edit-tour');
+    });
+
+    Route::get('{id}', [TourController::class, 'show'])->name('tour-detail');
+    Route::get('', [TourController::class, 'index'])->name('tour-list');
+});
+
 Route::get('clear-message', [Controller::class, 'clearMessage'])
     ->middleware('auth')
     ->name('clear-message');
 
-require __DIR__.'/auth.php';
-
-
-
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

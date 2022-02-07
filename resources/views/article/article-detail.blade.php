@@ -17,41 +17,42 @@
             </div>
 
 
-            @if(auth()->check())
-                <div class="comments">
-                    @foreach($article->comments as $comment)
-                        <div class="comment">
-                            <div class="user">
-                                <img src="{{url('images/avatar.png')}}" alt="">
-                                <div class="user-name">
-                                    {{$comment->name ?? ''}} |
-                                    Pridané: {{date('d. m. Y H:m', strtotime($comment->created_at))}}
+            <div class="comments">
+                @foreach($article->comments as $comment)
+                    <div class="comment">
+                        <div class="user">
+                            <img src="{{url('images/avatar.png')}}" alt="">
+                            <div class="user-name">
+                                {{$comment->name ?? ''}} |
+                                Pridané: {{date('d. m. Y H:m', strtotime($comment->created_at))}}
+                            </div>
+                            @if(auth()->id() === $comment->user_id)
+                                <div class="user-action">
+                                    <button class="btn btn-link update">Upraviť</button>
+                                    <button class="btn btn-link delete">Vymazať</button>
+                                    <button class="btn btn-link cancel" hidden>Zrušiť</button>
                                 </div>
-                                @if(auth()->id() === $comment->user_id)
-                                    <div class="user-action">
-                                        <button class="btn btn-link update">Upraviť</button>
-                                        <button class="btn btn-link delete">Vymazať</button>
-                                        <button class="btn btn-link cancel" hidden>Zrušiť</button>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="content">
-                                {{$comment->content ?? ''}}
-                            </div>
-
-                            <div hidden class="editable-content">
-                                <form action="{{route('update-comment')}}" method="post">
-                                    @csrf
-                                    <input type="text" name="id" hidden value="{{$comment->id}}">
-                                    <div class="form-group">
-                                        <textarea name="content" cols="30" rows="4" class="flex-grow-1">{{$comment->content ?? ''}}</textarea>
-                                    </div>
-                                    <button class="btn btn-primary">Uprav</button>
-                                </form>
-                            </div>
+                            @endif
                         </div>
-                    @endforeach
 
+                        <div class="content">
+                            {{$comment->content ?? ''}}
+                        </div>
+
+                        <div hidden class="editable-content">
+                            <form action="{{route('update-comment')}}" method="post">
+                                @csrf
+                                <input type="text" name="id" hidden value="{{$comment->id}}">
+                                <div class="form-group">
+                                    <textarea name="content" cols="30" rows="4" class="flex-grow-1">{{$comment->content ?? ''}}</textarea>
+                                </div>
+                                <button class="btn btn-primary">Uprav</button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+
+                @if(auth()->check())
                     <div class="comment">
                         <form action="{{route('store-comment')}}" method="post">
                             @csrf
@@ -63,8 +64,8 @@
                             <button class="btn btn-primary">Pridaj</button>
                         </form>
                     </div>
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
     </div>
 @endsection
@@ -76,21 +77,43 @@
             const commentElement = $(event.target).parent().parent().parent();
             const controlButtons = $(commentElement).find('.user-action');
 
+            //zobrazi komentare ako v div elemente kde sa nedaju editovat
             function showStaticContent() {
                 $('.content').each(function () {
                     $(this).show();
                 });
             }
 
+            //ak je niektory z komentarov v editovacom mode(ako textarea) tak ju skryje
             function hideEditableContent() {
                 $('.editable-content').each(function () {
                     $(this).hide();
                 });
             }
 
-            function cancelEditableMode() {
+            //talcidlo zrusit skryje a zobrazi tlacidla upravit a vymazat
+            function restoreButtonState() {
+                $('.comment').find('.user-action').children().each(function () {
+                    if ($(this).hasClass('cancel')) {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                });
+            }
+
+            //zgrupenie vyssie zapisanych funkcii do jedej
+            function cancelEditableModeOnAllNodes() {
                 showStaticContent();
                 hideEditableContent();
+                restoreButtonState();
+            }
+
+            //vytvori zalohu needitovatelnej casti komentaru a ak sa uzivatel rozhodne zrusit upravu vrati povodny obsah do textarii
+            function returnOriginalContent() {
+                const textarea = $(commentElement).find("textarea[name='content']");
+                const originalText = $(commentElement).find('.content').text().trim();
+                textarea.val(originalText);
             }
 
             function hideUpdateAndRemoveButton() {
@@ -101,29 +124,24 @@
                 })
             }
 
-            function returnOriginalContent() {
-                const textarea = $(commentElement).find("textarea[name='content']");
-                const originalText = $(commentElement).find('.content').text().trim();
-                textarea.val(originalText);
-            }
-
             function showCancelButton() {
                 const cancelBtn = controlButtons.find('.cancel');
                 cancelBtn.show();
 
                 cancelBtn.on('click', function () {
-                    controlButtons.children().each(function () {$(this).show()});
+                    controlButtons.children().each(function () {
+                        $(this).show()
+                    });
                     $(this).hide();
                     returnOriginalContent();
-                    cancelEditableMode();
+                    cancelEditableModeOnAllNodes();
                 })
             }
 
             function createCommentEditable() {
-                cancelEditableMode();
+                cancelEditableModeOnAllNodes();
                 hideUpdateAndRemoveButton();
                 showCancelButton();
-                createCommentEditable();
 
                 $(commentElement).find('.content').hide();
                 $(commentElement).find('.editable-content').show();
@@ -145,7 +163,7 @@
                     data,
                     success: function (payload) {
                         $(commentElement).find('.content').html(data.content);
-                        cancelEditableMode();
+                        cancelEditableModeOnAllNodes();
                     },
                     error: function (payload) {
                         throw new Error('Occurred error during request.');
@@ -171,11 +189,10 @@
                 type: 'DELETE',
                 url: '{{route('remove-comment')}}',
                 data,
-                success: function (payload) {
-                    console.log('som tu')
+                success: function () {
                     parentWrapper.remove();
                 },
-                error: function (payload) {
+                error: function () {
                     throw new Error('Occurred error during request.');
                 },
             })

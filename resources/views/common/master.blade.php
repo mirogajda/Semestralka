@@ -11,6 +11,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="{{mix('css/app.css')}}">
+        <link href="{{ asset('css/app.css?v=') . time() }}" rel="stylesheet">
         <script src="{{mix('js/app.js')}}"></script>
     </head>
     <body>

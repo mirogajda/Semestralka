@@ -8,6 +8,10 @@
         Články
     </a>
 
+    <a href="{{route('tour-list')}}">
+        Túry
+    </a>
+
     <div class="auth-section">
         @guest
             @if (Route::has('login'))
